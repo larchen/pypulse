@@ -157,7 +157,7 @@ def plot_populations(t, populations, shape=None, **kwargs):
     """
 
     if shape is None:
-        shape = (len(populations))
+        shape = (len(populations), )
 
     states = [
         ''.join(p) for p in it.product(*[map(str, range(d)) for d in shape])
@@ -167,7 +167,7 @@ def plot_populations(t, populations, shape=None, **kwargs):
     for i, p in enumerate(populations):
         ax.plot(t, p, f'C{i}', label=rf'$|{states[i]}\rangle$')
     
-    ax.set_xlabel('Time (ns)')
+    ax.set_xlabel('Time (s)')
     ax.set_ylabel('Population')
     ax.set_ylim(-0.05, 1.05)
     ax.legend(loc='center left', bbox_to_anchor=(1.01, 0.5))

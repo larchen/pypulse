@@ -147,20 +147,15 @@ def cosine_ramp(length, ramp_length, amplitude=1):
         np.array: An array of amplitudes specifying the pulse.
     """
 
-    ts = np.arange(length)
-    cosine_pulse = amplitude*np.piecewise(
-        ts,
-        [
-            ts < ramp_length, 
-            np.logical_and(ts >= ramp_length, ts < length - ramp_length), 
-            ts >= length - ramp_length
-        ],
-        [
-            lambda t: -0.5*(np.cos(np.pi/ramp_length*t) - 1),
-            1,
-            lambda t: -0.5*(np.cos(np.pi*(t - length)/ramp_length) - 1)
-        ]
-    )
+    cosine_pulse = amplitude*np.ones(int(length))
+    ramp_length = int(ramp_length)
+
+    ts = np.arange(ramp_length)
+    
+    ramp = 0.5*amplitude*(1-np.cos(np.pi/ramp_length*ts))
+    
+    cosine_pulse[:ramp_length] = ramp
+    cosine_pulse[-ramp_length:] = ramp[::-1]
 
     return np.abs(cosine_pulse)
 
