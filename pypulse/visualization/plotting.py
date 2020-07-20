@@ -3,6 +3,7 @@
 
 import numpy as np
 import matplotlib as mpl
+import itertools as it
 
 import matplotlib.pyplot as plt
 
@@ -143,7 +144,7 @@ def plot_bloch(t, x, y, z, omega=0.0, bloch=None, **kwargs):
     b.add_points([x,y,z])
     return b
     
-def plot_populations(t, populations, **kwargs):
+def plot_populations(t, populations, shape=None, **kwargs):
     """Plots the populations at each timestep.
 
     Args:
@@ -155,12 +156,20 @@ def plot_populations(t, populations, **kwargs):
         tuple: A tuple (fig, ax) representing the matplotlib figure and axis.
     """
 
+    if shape is None:
+        shape = (len(populations))
+
+    states = [
+        ''.join(p) for p in it.product(*[map(str, range(d)) for d in shape])
+    ]
+
     fig, ax = plt.subplots(figsize=kwargs.pop('figsize', (5,3)))
     for i, p in enumerate(populations):
-        ax.plot(t, p, f'C{i}', label=rf'$|{i}\rangle$')
+        ax.plot(t, p, f'C{i}', label=rf'$|{states[i]}\rangle$')
     
     ax.set_xlabel('Time (ns)')
     ax.set_ylabel('Population')
+    ax.set_ylim(-0.05, 1.05)
     ax.legend(loc='center left', bbox_to_anchor=(1.01, 0.5))
     fig.tight_layout()
     return fig, ax

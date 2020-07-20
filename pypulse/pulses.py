@@ -122,6 +122,18 @@ def drag(ts, pulse, lmbda, rescale=True):
 
     return drag_pulse
 
+def square(length, amplitude=1):
+    """Constructs a square pulse.
+
+    Args:
+        length (int): The total length (number of samples) of the pulse.
+        amplitude (float): The amplitude of the pulse.
+    
+    Returns:
+        np.array: An array of amplitudes specifying the pulse.
+    """
+
+    return amplitude*np.ones(np.round(length).astype(int))
 
 def cosine_ramp(length, ramp_length, amplitude=1):
     """Constructs a square pulse with cosine ramps.
